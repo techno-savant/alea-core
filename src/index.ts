@@ -69,9 +69,8 @@ Hooks.once('init', () => {
 });
 
 Hooks.once('ready', () => {
-  // Optional Lex integration — runs after lexicon-core has finished its own init.
-  // Uncomment when Task LEX.1 is implemented:
-  // void import('./lex/integration.js').then(m => m.initLexIntegration());
+  // Optional lex integration — runs after lex has finished its own init.
+  void import('./lex/integration.js').then(m => m.initLexIntegration());
 
   RollChatCard.init();
 

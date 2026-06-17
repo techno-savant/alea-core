@@ -1,6 +1,6 @@
 {
   "id": "alea-core",
-  "title": "Alea — Dice Resolution Engine",
+  "title": "[DTK] Alea",
   "description": "Part of the Demiurge Toolkit. A cross-system dice resolution engine for Foundry VTT. Systems register a Ritus to define their dice mechanics; Alea provides the six-stage pipeline, nine mechanic implementations, automation sequencer, and chat card.",
   "version": "0.1.0",
   "compatibility": { "minimum": "12", "verified": "13", "maximum": "14" },
@@ -8,6 +8,9 @@
   "esmodules": ["dist/alea-core.js"],
   "styles": ["dist/alea-core.css"],
   "languages": [{ "lang": "en", "name": "English", "path": "lang/en.json" }],
+  "relationships": {
+    "optional": [{ "id": "lex", "type": "module", "compatibility": { "minimum": "0.1.0" } }]
+  },
   "socket": true,
   "url": "https://github.com/techno-savant/alea-core",
   "manifest": "https://github.com/techno-savant/alea-core/releases/latest/download/module.json",
