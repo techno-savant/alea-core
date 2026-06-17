@@ -11,6 +11,7 @@ import type {
   ResolvedCasusConfig,
   RollContext,
 } from '../types/index.js';
+import { resolveDynamicValue } from './resolver.js';
 
 // ─── Structural mirrors of lex types ─────────────────────────────────────────
 // These match the shapes in lexicon-core/src/types/index.ts. If the lex API
@@ -77,13 +78,15 @@ function getLexApi(): LexApiSurface | undefined {
   return game.modules.get<{ api?: LexApiSurface }>('lex')?.api;
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── Display formatter (no context — used in toSentence only) ─────────────────
 
-function resolveBy(val: unknown): number {
-  if (typeof val === 'number') return val;
-  // TODO: resolve { ref } and { formula } when lex exposes a standalone resolver.
-  console.warn('[alea-core] Lex rule: non-numeric "by" value is not yet supported; using 0');
-  return 0;
+function formatBy(val: unknown): string {
+  if (typeof val === 'number') return `${val >= 0 ? '+' : ''}${val}`;
+  if (typeof val === 'object' && val !== null) {
+    if ('ref'     in val) return `+[${String((val as { ref: unknown }).ref)}]`;
+    if ('formula' in val) return `+(${String((val as { formula: unknown }).formula)})`;
+  }
+  return '+?';
 }
 
 // ─── Rule element: alea.pool-modifier ────────────────────────────────────────
@@ -102,9 +105,9 @@ const poolModifier: LexRuleElementDef = {
     // Applied via the alea.modifyPool Foundry hook — not via standard Lex evaluation.
   },
   toSentence(element, _vocab): string {
-    const by   = resolveBy(element['by']);
+    const by   = formatBy(element['by']);
     const when = typeof element['when'] === 'string' ? ` when [${element['when']}]` : '';
-    return `${by >= 0 ? '+' : ''}${by} to pool modifier${when}`;
+    return `${by} to pool modifier${when}`;
   },
 };
 
@@ -141,9 +144,9 @@ const casusModifier: LexRuleElementDef = {
   toSentence(element, _vocab): string {
     const target   = typeof element['target']   === 'string' ? element['target']   : 'threshold';
     const suppress = typeof element['suppress'] === 'string' ? element['suppress'] : '';
-    const by       = resolveBy(element['by']);
+    const by    = formatBy(element['by']);
     const parts: string[] = [];
-    if (by !== 0)  parts.push(`${by >= 0 ? '+' : ''}${by} to ${target}`);
+    if (by !== '+0') parts.push(`${by} to ${target}`);
     if (suppress)  parts.push(`suppress ${suppress}`);
     return parts.length ? parts.join('; ') : 'No adjustment';
   },
@@ -216,7 +219,7 @@ function onModifyPool(
 
     if (rule.type === 'alea.pool-modifier') {
       if (when && !ctx.tags.has(when)) continue;
-      modifier += resolveBy(rule['by']);
+      modifier += resolveDynamicValue(rule['by'], ctx);
     } else if (rule.type === 'alea.grant-fortune') {
       if (when && !ctx.tags.has(when)) continue;
       const f = rule['fortune'];
@@ -243,7 +246,7 @@ function onResolveCasus(resolved: ResolvedCasusConfig, ctx: RollContext): void {
     const when = typeof rule['when'] === 'string' ? rule['when'] : '';
     if (when && !ctx.tags.has(when)) continue;
 
-    const by       = resolveBy(rule['by']);
+    const by       = resolveDynamicValue(rule['by'], ctx);
     const target   = typeof rule['target']   === 'string' ? rule['target']   : '';
     const suppress = typeof rule['suppress'] === 'string' ? rule['suppress'] : '';
 
