@@ -1,0 +1,71 @@
+import '../styles/alea-core.css';
+
+import type { AleaApi } from './types/index.js';
+import { MechanicRegistry } from './registry/MechanicRegistry.js';
+import { calculi }          from './mechanics/Calculi.js';
+import { limen }            from './mechanics/Limen.js';
+import { gradus }           from './mechanics/Gradus.js';
+import { scala }            from './mechanics/Scala.js';
+import { bivium }           from './mechanics/Bivium.js';
+import { fulmen }           from './mechanics/Fulmen.js';
+import { comes }            from './mechanics/Comes.js';
+import { certamen }         from './mechanics/Certamen.js';
+import { casus }            from './mechanics/Casus.js';
+import { createAleaApi }    from './api.js';
+
+Hooks.once('init', () => {
+  game.settings.register('alea-core', 'automationLevel', {
+    name: 'ALEA.Settings.AutomationLevel.Name',
+    hint: 'ALEA.Settings.AutomationLevel.Hint',
+    scope: 'client',
+    config: true,
+    type: String,
+    choices: {
+      full: 'ALEA.Automation.Full',
+      semi: 'ALEA.Automation.Semi',
+      none: 'ALEA.Automation.None',
+    },
+    default: 'full',
+  });
+
+  game.settings.register('alea-core', 'postRollTimer', {
+    name: 'ALEA.Settings.PostRollTimer.Name',
+    hint: 'ALEA.Settings.PostRollTimer.Hint',
+    scope: 'client',
+    config: true,
+    type: Number,
+    default: 15,
+  });
+
+  // Register all nine built-in mechanics.
+  MechanicRegistry.register(calculi);
+  MechanicRegistry.register(limen);
+  MechanicRegistry.register(gradus);
+  MechanicRegistry.register(scala);
+  MechanicRegistry.register(bivium);
+  MechanicRegistry.register(fulmen);
+  MechanicRegistry.register(comes);
+  MechanicRegistry.register(certamen);
+  MechanicRegistry.register(casus);
+
+  // Build the public API and expose it on the Foundry module record and globalThis.
+  const api = createAleaApi();
+
+  const mod = game.modules.get<{ api?: AleaApi }>('alea-core');
+  if (mod !== undefined) mod.api = api;
+
+  (globalThis as Record<string, unknown>).alea = api;
+});
+
+Hooks.once('ready', () => {
+  // Optional Lex integration — runs after lexicon-core has finished its own init.
+  // Uncomment when Task LEX.1 is implemented:
+  // void import('./lex/integration.js').then(m => m.initLexIntegration());
+
+  const mod = game.modules.get<{ api?: AleaApi }>('alea-core');
+  const api = mod?.api;
+
+  Hooks.callAll('alea.ready', api);
+});
+
+export { getAleaApi } from './api.js';

@@ -1,0 +1,51 @@
+{
+  "ALEA": {
+    "Mechanic": {
+      "Calculi": "Calculi",
+      "Limen": "Limen",
+      "Gradus": "Gradus",
+      "Scala": "Scala",
+      "Bivium": "Bivium",
+      "Fulmen": "Fulmen",
+      "Comes": "Comes",
+      "Certamen": "Certamen",
+      "Casus": "Casus"
+    },
+    "Tier": {
+      "StrongHit": "Strong Hit",
+      "Hit": "Hit",
+      "CloseHit": "Close Hit",
+      "Miss": "Miss",
+      "CriticalMiss": "Critical Miss"
+    },
+    "Fortune": {
+      "Favorable": "Advantage",
+      "Unfavorable": "Disadvantage",
+      "Supreme": "Supreme Advantage"
+    },
+    "PostRoll": {
+      "Reroll": "Reroll",
+      "Accept": "Accept"
+    },
+    "ChatCard": {
+      "RollTotal": "Total",
+      "Hits": "Hits",
+      "Glitch": "Glitch"
+    },
+    "Automation": {
+      "Full": "Full",
+      "Semi": "Semi-Automatic",
+      "None": "Manual"
+    },
+    "Settings": {
+      "AutomationLevel": {
+        "Name": "Automation Level",
+        "Hint": "Controls how much Alea automates follow-up rolls and post-roll actions."
+      },
+      "PostRollTimer": {
+        "Name": "Post-Roll Timer (seconds)",
+        "Hint": "Seconds to wait for post-roll actions before auto-accepting. Set to 0 to disable the timer."
+      }
+    }
+  }
+}

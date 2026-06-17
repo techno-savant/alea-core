@@ -1,0 +1,21 @@
+# AI tools
+.claude/
+.cursor/
+.copilot/
+.continue/
+.aider*
+.codeium/
+.tabnine/
+.ai/
+openspec/
+CLAUDE.md
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# OS
+.DS_Store
+Thumbs.db
