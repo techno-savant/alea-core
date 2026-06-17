@@ -1,1 +1,197 @@
-/* alea-core styles — populated during chat card implementation (Task 5.1) */
+/* alea-core — roll chat card styles */
+
+/* ── Custom properties ──────────────────────────────────────────────────── */
+:root {
+  --alea-border: var(--color-border-dark-tertiary, #ddd);
+  --alea-text-secondary: var(--color-text-dark-secondary, #888);
+  --alea-radius-pill: 999px;
+  --alea-radius-sm: 3px;
+  --alea-radius-md: 4px;
+
+  /* Tier palette */
+  --alea-color-strong-hit: #c7a500;
+  --alea-color-hit: #2e8b57;
+  --alea-color-close-hit: #2979b3;
+  --alea-color-glancing: #d4750a;
+  --alea-color-miss: #c0392b;
+
+  /* Badge palette (reused for action buttons) */
+  --alea-color-glitch: #c0392b;
+  --alea-color-critical: #8b4513;
+  --alea-color-quality-and: #2979b3;
+  --alea-color-quality-but: #d4750a;
+}
+
+/* ── Card container ─────────────────────────────────────────────────────── */
+.alea-roll-card {
+  max-width: 400px;
+  border: 1px solid var(--alea-border);
+  border-radius: var(--alea-radius-sm);
+  padding: 8px 10px;
+  font-size: 0.9em;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.alea-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--alea-border);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+
+.alea-schema-label {
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* ── Tier badge ─────────────────────────────────────────────────────────── */
+.alea-tier-badge {
+  border-radius: var(--alea-radius-pill);
+  font-size: 0.75em;
+  padding: 2px 10px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.alea-tier-strong-hit { background-color: var(--alea-color-strong-hit); }
+.alea-tier-hit        { background-color: var(--alea-color-hit); }
+.alea-tier-close-hit  { background-color: var(--alea-color-close-hit); }
+.alea-tier-glancing   { background-color: var(--alea-color-glancing); }
+.alea-tier-miss       { background-color: var(--alea-color-miss); }
+
+/* ── Dice section ───────────────────────────────────────────────────────── */
+.alea-dice {
+  margin: 8px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.alea-dice-group {
+  display: inline-flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.alea-die {
+  display: inline-block;
+  min-width: 1.8em;
+  height: 1.8em;
+  line-height: 1.8em;
+  text-align: center;
+  border: 1px solid currentColor;
+  border-radius: var(--alea-radius-sm);
+  font-weight: 700;
+  font-size: 0.85em;
+  padding: 0 3px;
+}
+
+/* ── Fortune / advantage-disadvantage sets ──────────────────────────────── */
+.alea-fortune-sets {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.alea-fortune-set {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  padding: 3px;
+  border-radius: var(--alea-radius-sm);
+}
+
+.alea-fortune-kept {
+  background: rgba(46, 139, 87, 0.1);
+  border: 1px solid rgba(46, 139, 87, 0.3);
+}
+
+.alea-fortune-unkept {
+  opacity: 0.4;
+}
+
+.alea-fortune-unkept .alea-die {
+  text-decoration: line-through;
+}
+
+/* ── Summary row ────────────────────────────────────────────────────────── */
+.alea-summary {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  font-size: 0.85em;
+}
+
+.alea-summary-label {
+  color: var(--alea-text-secondary);
+  margin-right: 2px;
+}
+
+/* ── Inline badges ──────────────────────────────────────────────────────── */
+.alea-badge {
+  padding: 1px 6px;
+  border-radius: var(--alea-radius-pill);
+  font-size: 0.75em;
+  font-weight: 600;
+}
+
+.alea-glitch-badge {
+  composes: alea-badge;
+  background: var(--alea-color-glitch);
+  color: #fff;
+}
+
+.alea-critical-badge {
+  composes: alea-badge;
+  background: var(--alea-color-critical);
+  color: #fff;
+}
+
+.alea-quality-and-badge {
+  composes: alea-badge;
+  background: var(--alea-color-quality-and);
+  color: #fff;
+}
+
+.alea-quality-but-badge {
+  composes: alea-badge;
+  background: var(--alea-color-quality-but);
+  color: #fff;
+}
+
+/* ── Actions footer ─────────────────────────────────────────────────────── */
+.alea-actions {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  border-top: 1px solid var(--alea-border);
+  padding-top: 8px;
+}
+
+.alea-action-btn {
+  cursor: pointer;
+  padding: 4px 12px;
+  border-radius: var(--alea-radius-md);
+  border: 1px solid currentColor;
+  background: transparent;
+  font-size: 0.8em;
+}
+
+.alea-action-btn:hover {
+  background: rgba(0, 0, 0, 0.07);
+}
+
+.alea-action-accept {
+  color: var(--alea-color-hit);
+  border-color: var(--alea-color-hit);
+}
+
+.alea-action-reroll {
+  color: var(--alea-color-close-hit);
+  border-color: var(--alea-color-close-hit);
+}

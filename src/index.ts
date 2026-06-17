@@ -12,6 +12,8 @@ import { comes }            from './mechanics/Comes.js';
 import { certamen }         from './mechanics/Certamen.js';
 import { casus }            from './mechanics/Casus.js';
 import { createAleaApi }    from './api.js';
+import { TierLabelRegistry } from './registry/TierLabelRegistry.js';
+import { RollChatCard }      from './chat/RollChatCard.js';
 
 Hooks.once('init', () => {
   game.settings.register('alea-core', 'automationLevel', {
@@ -35,6 +37,15 @@ Hooks.once('init', () => {
     config: true,
     type: Number,
     default: 15,
+  });
+
+  // Register default English tier labels. Ritus implementations call api.registerTierLabels() to override.
+  TierLabelRegistry.register({
+    'strong-hit': 'Strong Hit',
+    'hit':        'Hit',
+    'close-hit':  'Close Hit',
+    'glancing':   'Glancing',
+    'miss':       'Miss',
   });
 
   // Register all nine built-in mechanics.
@@ -62,6 +73,8 @@ Hooks.once('ready', () => {
   // Uncomment when Task LEX.1 is implemented:
   // void import('./lex/integration.js').then(m => m.initLexIntegration());
 
+  RollChatCard.init();
+
   const mod = game.modules.get<{ api?: AleaApi }>('alea-core');
   const api = mod?.api;
 
@@ -69,3 +82,4 @@ Hooks.once('ready', () => {
 });
 
 export { getAleaApi } from './api.js';
+export { RollChatCard } from './chat/RollChatCard.js';

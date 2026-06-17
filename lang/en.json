@@ -15,8 +15,8 @@
       "StrongHit": "Strong Hit",
       "Hit": "Hit",
       "CloseHit": "Close Hit",
-      "Miss": "Miss",
-      "CriticalMiss": "Critical Miss"
+      "Glancing": "Glancing",
+      "Miss": "Miss"
     },
     "Fortune": {
       "Favorable": "Advantage",
@@ -27,10 +27,17 @@
       "Reroll": "Reroll",
       "Accept": "Accept"
     },
+    "Quality": {
+      "And": "And...",
+      "But": "But..."
+    },
     "ChatCard": {
       "RollTotal": "Total",
       "Hits": "Hits",
-      "Glitch": "Glitch"
+      "Glitch": "Glitch",
+      "Margin": "Margin",
+      "Quality": "Quality",
+      "Critical": "Critical"
     },
     "Automation": {
       "Full": "Full",

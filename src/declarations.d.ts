@@ -45,3 +45,16 @@ declare const ui: {
 };
 
 declare const CONFIG: Record<string, unknown>;
+
+declare const ChatMessage: {
+  implementation: {
+    create(data: {
+      content: string;
+      speaker?: Record<string, unknown>;
+      flags?: Record<string, unknown>;
+    }): Promise<{ id: string } | undefined>;
+  };
+  getSpeaker(options: {
+    actor?: { id: string; name: string } | null;
+  }): Record<string, unknown>;
+};

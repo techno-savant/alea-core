@@ -16,6 +16,12 @@ export class PostRollActionQueue {
     handler:     async (_result: RollResult, _ctx: RollContext, _api: AleaApi): Promise<void> => { /* wired by RollPipeline */ },
   };
 
+  static #current: PostRollActionQueue | null = null;
+
+  static getCurrent(): PostRollActionQueue | null {
+    return PostRollActionQueue.#current;
+  }
+
   readonly result:  RollResult;
   readonly ctx:     RollContext;
   readonly actions: PostRollAction[];
@@ -34,6 +40,7 @@ export class PostRollActionQueue {
   }
 
   open(timeoutMs: number | null): Promise<PostRollAction> {
+    PostRollActionQueue.#current = this;
     return new Promise<PostRollAction>((resolve, reject) => {
       this.#resolve = resolve;
       this.#reject  = reject;
@@ -58,12 +65,14 @@ export class PostRollActionQueue {
     if (action === undefined) {
       this.#reject?.(new Error(`Unknown action id: ${actionId}`));
       this.#clearTimer();
+      PostRollActionQueue.#current = null;
       this.#resolve = null;
       this.#reject  = null;
       return;
     }
 
     this.#clearTimer();
+    PostRollActionQueue.#current = null;
     const resolveRef = this.#resolve;
     this.#resolve    = null;
     this.#reject     = null;
@@ -75,6 +84,7 @@ export class PostRollActionQueue {
   cancel(): void {
     if (this.#reject === null) return;
     this.#clearTimer();
+    PostRollActionQueue.#current = null;
     const rejectRef = this.#reject;
     this.#resolve   = null;
     this.#reject    = null;

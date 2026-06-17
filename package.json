@@ -7,10 +7,19 @@
     "dev": "vite build --watch",
     "typecheck": "tsc --noEmit",
     "preversion": "npm run typecheck",
-    "postversion": "git push --follow-tags"
+    "postversion": "git push --follow-tags",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.9",
     "typescript": "^5.4.0",
-    "vite": "^5.0.0"
+    "vite": "^5.0.0",
+    "vitest": "^4.1.9"
+  },
+  "allowScripts": {
+    "esbuild@0.21.5": true,
+    "fsevents@2.3.3": true
   }
 }
