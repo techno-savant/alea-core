@@ -13,6 +13,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -34,9 +36,17 @@ jobs:
         run: |
           zip -r module.zip module.json dist/ lang/ LICENSE
 
+      - name: Generate changelog
+        uses: orhun/git-cliff-action@v4
+        id: git-cliff
+        with:
+          config: cliff.toml
+          args: --latest --strip header
+
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
+          body: ${{ steps.git-cliff.outputs.content }}
           files: |
             module.zip
             module.json
