@@ -36,7 +36,8 @@ export function rollPool(
         : hitCounts.indexOf(Math.max(...hitCounts));
 
     const keptRaw = sets[keptIndex] ?? sets[0];
-    result = { ...keptRaw, fortuneSets: sets, keptSet: keptIndex };
+    if (keptRaw === undefined) throw new Error('Alea ROLL: fortune set selection returned no result');
+    result = { rolls: keptRaw.rolls, modifier: keptRaw.modifier, fortuneSets: sets, keptSet: keptIndex };
   } else {
     result = mechanic.roll(pool, schema.mechanicConfig);
   }
